@@ -121,15 +121,10 @@ public class Test1 {
         for (WebElement e: elements)
             list2.add(e.getText().trim());
 
+        message = "Error in subjects";
+        Assert.assertEquals(message + "with size", list.size(), list2.size());
         list.removeAll(list2);
-
-        if(list.size() != 0) {
-            String message = "No subjects:\n";
-            for(String s: list)
-                message += s + "\n";
-            throw new NoSuchElementException(message);
-        }
-
+        Assert.assertTrue(message, list.size() ==0);
         Thread.sleep(2000);
     }
 
