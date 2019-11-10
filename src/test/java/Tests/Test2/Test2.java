@@ -128,14 +128,7 @@ public class Test2 {
         HttpResponse response = httpclient.execute(httppost);
         HttpEntity entity = response.getEntity();
 
-        if (entity != null) {
-            InputStream instream = entity.getContent();
-            try {
-
-            } finally {
-                instream.close();
-            }
-        }
+        InputStream instream = entity.getContent();
     }
 
 }

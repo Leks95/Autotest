@@ -1,6 +1,7 @@
 package Tests.Test1;
 
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -20,7 +21,7 @@ public class Test1 {
     private String message;
 
     @BeforeClass
-    public static void setup() throws InterruptedException {
+    public static void setup(){
         System.setProperty("webdriver.chrome.driver", "chromedriver");
         driver = new ChromeDriver();
 
@@ -31,35 +32,31 @@ public class Test1 {
     }
 
     @Test
-    public void checkItems() throws InterruptedException {
+    public void checkItems() {
         Subheaders[] subheaders = Subheaders.values();
         List<WebElement> element3 = driver.findElements(By.className("who-we-serve-block-title"));
 
-        ArrayList<String> list = new ArrayList<>();
+        List<String> list = new ArrayList<>();
         for (Subheaders s: subheaders)
             list.add(s.getTitle());
-        ArrayList<String> list2 = new ArrayList<>();
+        List<String> list2 = new ArrayList<>();
         for (WebElement e: element3)
             list2.add(e.getText());
         List<String> errors = list.stream().filter(o1 -> list2.stream().noneMatch(o2 -> o2.equals(o1)))
                 .collect(Collectors.toList());
 
-        if(errors.size() != 0) {
-            String message = "No headlines:\n";
-            for(String s: errors)
-                message += s + "\n";
-            throw new NoSuchElementException(message);
-        }
+        message = "Error in headlines";
+        Assert.assertTrue(message, errors.size() ==0);
+        Assert.assertEquals(message, list.size(), list2.size());
     }
 
     @Test
-    public void useSearch() throws InterruptedException {
+    public void useSearch(){
         message = "Nothing found";
         WebElement element2 = driver.findElement(By.xpath("//*[@id=\"js-site-search-input\"]"));
         element2.sendKeys("Java");
         List<WebElement> element3 = driver.findElements(By.xpath("//*[@id=\"ui-id-2\"]/section/div/div"));
-        if(element3.size() == 0)
-            throw new NoSuchElementException(message);
+        Assert.assertTrue(message, element3.size()!=0);
     }
 
     @Test
@@ -116,11 +113,11 @@ public class Test1 {
         List<WebElement> elements = element3.findElements(By.xpath("//*[@id=\"Level1NavNode2\"]/ul/li[9]/div/ul/ul/li"));
         Subjects[] subjects = Subjects.values();
 
-        ArrayList<String> list = new ArrayList<>();
+        List<String> list = new ArrayList<>();
         for (Subjects e: subjects)
             list.add(e.getTitle().trim());
 
-        ArrayList<String> list2 = new ArrayList<>();
+        List<String> list2 = new ArrayList<>();
         for (WebElement e: elements)
             list2.add(e.getText().trim());
 
